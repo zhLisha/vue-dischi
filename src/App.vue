@@ -1,18 +1,27 @@
 <template>
   <div id="app">
+    <!-- Header -->
     <header>
       <HeaderSpotify />
     </header>
+
+    <!-- Content -->
+    <main>
+      <CardList />
+    </main>
+    
   </div>
 </template>
 
 <script>
 import HeaderSpotify from './components/HeaderSpotify.vue'
+import CardList from './components/CardList.vue'
 
 export default {
   name: 'App',
   components: {
-    HeaderSpotify
+    HeaderSpotify,
+    CardList
   }
 }
 </script>
