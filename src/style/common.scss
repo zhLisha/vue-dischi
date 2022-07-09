@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;700;900&display=swap');
 @import '@/style/variables.scss';
 
+
 // Reset
 * {
     margin: 0;
@@ -13,6 +14,10 @@ body {
     background-color: $mainColor;
     font-family: 'Roboto', sans-serif;
     min-width: 1200px;
+}
+
+main {
+    transition: opacity 2s ease-in;
 }
 
 img {

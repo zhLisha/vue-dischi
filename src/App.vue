@@ -28,6 +28,6 @@ export default {
 
 <style lang="scss">
 @import '@/style/common.scss';
-@import '@/style/variables.scss'
+@import '@/style/variables.scss';
 
 </style>
