@@ -7,10 +7,10 @@
     <div v-if="isLoading" >
         <!-- Option Chose by Genre -->
         <div class="select-genre">
-            <SelectGenre @selectGenre="currentGenre"/>
+            <SelectGenre @selectGenre="currentGenre" @selectAuthor="currentAuthor" :authorsArr="cardList"/>
         </div>
         <div class="cards flex">
-            <CardComponent v-for="(card) in filteredGenre" :key="card.id" :cardDetails="card" />
+            <CardComponent v-for="(card) in filteredSong" :key="card.id" :cardDetails="card" />
         </div>
     </div>
 
@@ -24,7 +24,7 @@
 import axios from 'axios';
 import CardComponent from './CardComponent.vue'
 import LoadingPage from './LoadingPage.vue'
-import SelectGenre from './SelectGenre.vue'
+import SelectGenre from './SearchSelect.vue'
 
 export default {
     name: 'CardList',
@@ -39,20 +39,29 @@ export default {
             url: 'https://flynn.boolean.careers/exercises/api/array/music',
             cardList: [],
             isLoading: false,
-            searchedGenre: 'All'
+            searchedGenre: 'All Genre',
+            searchedAuthor: 'All Authors'
         }
     },
 
     computed: {
-        filteredGenre() {
-            if(this.searchedGenre === 'All') {
+        filteredSong() {
+            if(this.searchedGenre === 'All Genre' && this.searchedAuthor === 'All Authors') {
                 return this.cardList;
+            } else if(this.searchedGenre !== 'All Genre' && this.searchedAuthor === 'All Authors') {
+                 return this.cardList.filter((element) => {
+                    return element.genre.includes(this.searchedGenre)
+                });
+            } else if(this.searchedAuthor !== 'All Authors' && this.searchedGenre === 'All Genre'){
+                return this.cardList.filter((element) => {
+                    return element.author.includes(this.searchedAuthor)
+                });
             }
 
             return this.cardList.filter((element) => {
-                return element.genre.includes(this.searchedGenre)
-            });
-        }
+                return element.genre.includes(this.searchedGenre) && element.author.includes(this.searchedAuthor)
+            })
+        }     
     },
 
     methods: {
@@ -67,6 +76,10 @@ export default {
 
         currentGenre(genre) {
             this.searchedGenre = genre;
+        },
+
+        currentAuthor(author) {
+            this.searchedAuthor = author;
         }
     },
 
@@ -84,7 +97,6 @@ export default {
 
 .select-genre {
     padding-top: 50px;
-
 }
 
 </style>
