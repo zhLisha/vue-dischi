@@ -1,8 +1,17 @@
 <template>
 <!-- Card Music List -->
   <div class="container">
-    <div v-if="isLoading" class="cards flex">
-        <CardComponent v-for="(card) in cardList" :key="card.id" :cardDetails="card" />
+    
+
+    <!-- Cards -->
+    <div v-if="isLoading" >
+        <!-- Option Chose by Genre -->
+        <div class="select-genre">
+            <SelectGenre @selectGenre="currentGenre"/>
+        </div>
+        <div class="cards flex">
+            <CardComponent v-for="(card) in filteredGenre" :key="card.id" :cardDetails="card" />
+        </div>
     </div>
 
      <div v-else>
@@ -15,19 +24,34 @@
 import axios from 'axios';
 import CardComponent from './CardComponent.vue'
 import LoadingPage from './LoadingPage.vue'
+import SelectGenre from './SelectGenre.vue'
 
 export default {
     name: 'CardList',
     components: {
         CardComponent,
-        LoadingPage
+        LoadingPage,
+        SelectGenre
     },
 
     data() {
         return {
             url: 'https://flynn.boolean.careers/exercises/api/array/music',
             cardList: [],
-            isLoading: false
+            isLoading: false,
+            searchedGenre: 'All'
+        }
+    },
+
+    computed: {
+        filteredGenre() {
+            if(this.searchedGenre === 'All') {
+                return this.cardList;
+            }
+
+            return this.cardList.filter((element) => {
+                return element.genre.includes(this.searchedGenre)
+            });
         }
     },
 
@@ -39,6 +63,10 @@ export default {
                     this.isLoading = true;
                 }, 1500);
             });
+        },
+
+        currentGenre(genre) {
+            this.searchedGenre = genre;
         }
     },
 
@@ -51,7 +79,12 @@ export default {
 <style lang="scss" scoped>
 .cards {
     flex-wrap: wrap;
-    padding: 70px 0;
+    padding: 50px 0;
+}
+
+.select-genre {
+    padding-top: 50px;
+
 }
 
 </style>
